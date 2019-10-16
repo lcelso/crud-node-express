@@ -2,7 +2,6 @@ const express = require("express");
 const server = express();
 
 const projects = [{ id: "1", title: "Estudando nodejs", task: [] }];
-let numberRequest = 0;
 
 server.use(express.json());
 
@@ -11,21 +10,41 @@ function checkProjectExists(req, res, next) {
   const project = projects.find(pjs => pjs.id === id);
 
   if (!project) {
-    return res.status(400).json({ error: "Project not exist" });
+    return res.status(400).send({ error: "Project not exist" });
   }
 
   return next();
 }
 
-function countRequest(req, res, next) {
-  numberRequest++;
+function applicationsLogs(req, res, next) {
+  const { url, method } = req;
+  const end = res.end;
 
-  console.log(`Número total de requisições feitas é de: ${numberRequest}`);
+  const data = {
+    index: {
+      method,
+      url
+    }
+  };
+
+  res.end = function(chunk, encoding) {
+    data.index.statusCode = res.statusCode;
+
+    console.time("request");
+    console.group("Total Requests");
+    console.count("Total number of requests made is");
+    console.groupEnd();
+    console.table(data);
+    console.timeEnd("request");
+
+    res.end = end;
+    res.end(chunk, encoding);
+  };
 
   return next();
 }
 
-server.use(countRequest);
+server.use(applicationsLogs);
 
 server.post("/projects", (req, res) => {
   const { id, title } = req.body;
