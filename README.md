@@ -1,16 +1,16 @@
 # Crud node with express
 
-## Rotas
+## Routes
 
 POST /projects: The route must be given id and title within the body of registering a new project within an array in the following format: {id: "1", title: 'New project', tasks: []};
 
-GET /projects: Route that lists all projects and their tasks;
+GET '/projects' : Route that lists all projects and their tasks;
 
-PUT /projects/:id: The route should only change the project title with the id present in the route parameters;
+PUT '/projects/:id': The route should only change the project title with the id present in the route parameters;
 
-DELETE /projects/:id: The route must delete the project with the id present in the route parameters;
+DELETE '/projects/:id': The route must delete the project with the id present in the route parameters;
 
-POST /projects/:id/tasks: The route must be given a title field and store a new task in the task array of a specific project chosen through the id present in the route parameters;
+POST '/projects/:id/tasks': The route must be given a title field and store a new task in the task array of a specific project chosen through the id present in the route parameters;
 
 ## Middlewares
 
